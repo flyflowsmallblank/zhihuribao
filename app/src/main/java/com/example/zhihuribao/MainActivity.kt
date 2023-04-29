@@ -2,9 +2,14 @@ package com.example.zhihuribao
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.example.zhihuribao.`interface`.BackInterface
+import com.example.zhihuribao.adapter.ViewPagerAdapter
 import com.example.zhihuribao.databinding.ActivityMainBinding
 
 
@@ -16,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(mBinding.root)
         initStatusBar()
+        initBanner()
     }
 
     /**
@@ -43,5 +49,48 @@ class MainActivity : AppCompatActivity() {
         }
         Log.d(TAG, "getStatusBatHeight:$result ")
         return result
+    }
+
+    /**
+     * banner轮播
+     */
+
+    private fun initBanner(){
+        var fragments = ArrayList<BackInterface>()
+        fragments.add(object : BackInterface{
+            override fun back(): Fragment {
+                return BannerFragment.newInstance(R.drawable.banner1)
+            }
+        })
+        fragments.add(object : BackInterface{
+            override fun back(): Fragment {
+                return BannerFragment.newInstance(R.drawable.banner2)
+            }
+        })
+        fragments.add(object : BackInterface{
+            override fun back(): Fragment {
+                return BannerFragment.newInstance(R.drawable.banner3)
+            }
+        })
+        fragments.add(object : BackInterface{
+            override fun back(): Fragment {
+                return BannerFragment.newInstance(R.drawable.banner4)
+            }
+        })
+        val adapter = ViewPagerAdapter(fragments , this)
+        mBinding.mainVp2Banner.adapter = adapter
+        Log.d(TAG, "适配器设置成功: ")
+        //自动轮播banner
+        var currentIndex = 0
+        val handler = Handler(Looper.myLooper()!!)
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                if(currentIndex>3){
+                    currentIndex = 0
+                }
+                mBinding.mainVp2Banner.currentItem = currentIndex++
+                handler.postDelayed(this, 3000)
+            }
+        }, 5000)
     }
 }
