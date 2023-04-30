@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import com.example.zhihuribao.`interface`.BackInterface
 import com.example.zhihuribao.adapter.ViewPagerAdapter
 import com.example.zhihuribao.databinding.ActivityMainBinding
+import java.time.Month
+import java.util.Calendar
 
 
 const val TAG = "lx"
@@ -22,6 +24,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(mBinding.root)
         initStatusBar()
         initBanner()
+        initTime()
+    }
+
+    /**
+     * 左上角日期的更改
+     */
+    private fun initTime() {
+        val calender = Calendar.getInstance()
+        val month = calender.get(Calendar.MONTH)+1
+        val day = calender.get(Calendar.DAY_OF_MONTH)
+        val monthMap = mapOf<Int,String>(
+            1 to "一月", 2 to "二月", 3 to "三月", 4 to "四月",
+            5 to "五月", 6 to "六月", 7 to "七月", 8 to "八月",
+            9 to "九月", 10 to "十月", 11 to "十一月", 12 to "十二月"
+        )
+        mBinding.mainFrameDay.text = day.toString()
+        mBinding.mainFrameMonth.text = monthMap[month]
     }
 
     /**
