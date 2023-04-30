@@ -20,7 +20,7 @@ class BannerFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        val imageView = mBinding.imageView as ImageView
+        val imageView = mBinding.imageView
         imageView.setImageResource(arguments?.getInt("image_res") ?: 0)
         Log.d(TAG, "取出的图片资源是 ${arguments?.getInt("image_res") ?: 0}")
         return mBinding.root

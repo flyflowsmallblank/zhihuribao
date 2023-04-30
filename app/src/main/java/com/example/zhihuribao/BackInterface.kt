@@ -1,4 +1,4 @@
-package com.example.zhihuribao.`interface`
+package com.example.zhihuribao
 
 import androidx.fragment.app.Fragment
 

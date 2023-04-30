@@ -62,7 +62,7 @@
         <ImageView
             android:src="@drawable/icon_zhihu"
             android:layout_marginStart="340dp"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="8dp"
             android:id="@+id/main_frame_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -84,13 +84,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/main_vp2_banner" />
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/main_rv_content"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/main_tab" />-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/main_rv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_tab" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

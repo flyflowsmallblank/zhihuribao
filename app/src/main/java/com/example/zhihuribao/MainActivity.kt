@@ -8,23 +8,44 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.zhihuribao.`interface`.BackInterface
-import com.example.zhihuribao.adapter.ViewPagerAdapter
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.zhihuribao.databinding.ActivityMainBinding
-import java.time.Month
 import java.util.Calendar
 
 
 const val TAG = "lx"
 class MainActivity : AppCompatActivity() {
     private val mBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private val mViewModel by lazy { ViewModelProvider(this,NetWorkFactory("https://news-at.zhihu.com/api/4/"))[NetWork::class.java] }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(mBinding.root)
         initStatusBar()
+        initObserver()
         initBanner()
         initTime()
+        startConnection()
+    }
+
+    /**
+     * 初始化观察者对象
+     */
+    private fun initObserver() {
+        mViewModel.homeLiveData.observe(this){
+            val latestMessage = it as LatestMessage
+            mBinding.mainRvContent.adapter = RecyclerViewAdapter(latestMessage.stories,this)
+            mBinding.mainRvContent.layoutManager = LinearLayoutManager(this@MainActivity,RecyclerView.VERTICAL,false)
+        }
+    }
+
+    /**
+     * 从网络请求数据，然后适配器填充
+     */
+    private fun startConnection() {
+        mViewModel.getLatestMessage(this)
     }
 
     /**
@@ -76,22 +97,22 @@ class MainActivity : AppCompatActivity() {
 
     private fun initBanner(){
         var fragments = ArrayList<BackInterface>()
-        fragments.add(object : BackInterface{
+        fragments.add(object : BackInterface {
             override fun back(): Fragment {
                 return BannerFragment.newInstance(R.drawable.banner1)
             }
         })
-        fragments.add(object : BackInterface{
+        fragments.add(object : BackInterface {
             override fun back(): Fragment {
                 return BannerFragment.newInstance(R.drawable.banner2)
             }
         })
-        fragments.add(object : BackInterface{
+        fragments.add(object : BackInterface {
             override fun back(): Fragment {
                 return BannerFragment.newInstance(R.drawable.banner3)
             }
         })
-        fragments.add(object : BackInterface{
+        fragments.add(object : BackInterface {
             override fun back(): Fragment {
                 return BannerFragment.newInstance(R.drawable.banner4)
             }
