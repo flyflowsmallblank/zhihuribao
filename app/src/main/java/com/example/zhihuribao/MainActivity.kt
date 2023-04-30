@@ -1,5 +1,6 @@
 package com.example.zhihuribao
 
+import android.R.attr.data
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
@@ -9,10 +10,12 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zhihuribao.databinding.ActivityMainBinding
-import java.util.Calendar
+import com.google.android.material.tabs.TabLayoutMediator
+import java.util.*
 
 
 const val TAG = "lx"
@@ -24,25 +27,33 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(mBinding.root)
         initStatusBar()
-        initObserver()
-        initBanner()
-        initTime()
+        initRvObserver()
         startConnection()
+//        initTabLayout()
+        initTime()
+    }
+
+    private fun initTabLayout() {
+        TabLayoutMediator(mBinding.mainTab, mBinding.mainVp2Banner) { tab, position ->
+
+        }.attach() //这个没有
+
     }
 
     /**
-     * 初始化观察者对象
+     * 初始化观察者对象,这个是观察最新的,同时也是轮播图的banner的
      */
-    private fun initObserver() {
+    private fun initRvObserver() {
         mViewModel.homeLiveData.observe(this){
             val latestMessage = it as LatestMessage
             mBinding.mainRvContent.adapter = RecyclerViewAdapter(latestMessage.stories,this)
-            mBinding.mainRvContent.layoutManager = LinearLayoutManager(this@MainActivity,RecyclerView.VERTICAL,false)
+            mBinding.mainRvContent.layoutManager = LinearLayoutManager(this)
+            initBanner(it)
         }
     }
 
     /**
-     * 从网络请求数据，然后适配器填充
+     * 从网络请求数据，然后Rv适配器填充
      */
     private fun startConnection() {
         mViewModel.getLatestMessage(this)
@@ -95,28 +106,15 @@ class MainActivity : AppCompatActivity() {
      * banner轮播
      */
 
-    private fun initBanner(){
+    private fun initBanner(latestMessage: LatestMessage){
         var fragments = ArrayList<BackInterface>()
-        fragments.add(object : BackInterface {
-            override fun back(): Fragment {
-                return BannerFragment.newInstance(R.drawable.banner1)
-            }
-        })
-        fragments.add(object : BackInterface {
-            override fun back(): Fragment {
-                return BannerFragment.newInstance(R.drawable.banner2)
-            }
-        })
-        fragments.add(object : BackInterface {
-            override fun back(): Fragment {
-                return BannerFragment.newInstance(R.drawable.banner3)
-            }
-        })
-        fragments.add(object : BackInterface {
-            override fun back(): Fragment {
-                return BannerFragment.newInstance(R.drawable.banner4)
-            }
-        })
+        for(top_story in latestMessage.top_stories){
+            fragments.add(object : BackInterface {
+                override fun back(): Fragment {
+                    return BannerFragment.newInstance(top_story.image)
+                }
+            })
+        }
         val adapter = ViewPagerAdapter(fragments , this)
         mBinding.mainVp2Banner.adapter = adapter
         Log.d(TAG, "适配器设置成功: ")
