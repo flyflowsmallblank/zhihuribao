@@ -1,4 +1,4 @@
-package com.example.zhihuribao
+package com.example.zhihuribao.data
 
 data class OldMessage(
     val date: String,

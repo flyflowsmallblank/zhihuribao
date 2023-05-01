@@ -1,4 +1,4 @@
-package com.example.zhihuribao
+package com.example.zhihuribao.util.network
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

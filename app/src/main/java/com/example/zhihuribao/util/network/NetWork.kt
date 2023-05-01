@@ -1,4 +1,4 @@
-package com.example.zhihuribao
+package com.example.zhihuribao.util.network
 
 import android.content.Context
 import android.util.Log
@@ -6,6 +6,9 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.zhihuribao.data.*
+import com.example.zhihuribao.interfacee.ApiService
+import com.example.zhihuribao.view.TAG
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable

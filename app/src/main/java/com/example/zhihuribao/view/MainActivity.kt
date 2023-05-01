@@ -1,30 +1,32 @@
-package com.example.zhihuribao
+package com.example.zhihuribao.view
 
-import android.R.attr.data
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.indices
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.zhihuribao.*
 import com.example.zhihuribao.databinding.ActivityMainBinding
-import com.google.android.material.tabs.TabLayoutMediator
+import com.example.zhihuribao.data.LatestMessage
+import com.example.zhihuribao.interfacee.BackInterface
+import com.example.zhihuribao.util.network.NetWork
+import com.example.zhihuribao.util.network.NetWorkFactory
+import com.example.zhihuribao.adapter.RecyclerViewAdapter
+import com.example.zhihuribao.adapter.ViewPagerAdapter
 import java.util.*
 
 
 const val TAG = "lx"
 class MainActivity : AppCompatActivity() {
     private val mBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val mViewModel by lazy { ViewModelProvider(this,NetWorkFactory("https://news-at.zhihu.com/api/4/"))[NetWork::class.java] }
+    private val mViewModel by lazy { ViewModelProvider(this,
+        NetWorkFactory("https://news-at.zhihu.com/api/4/")
+    )[NetWork::class.java] }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,9 +122,10 @@ class MainActivity : AppCompatActivity() {
     private fun initBanner(latestMessage: LatestMessage){
         var fragments = ArrayList<BackInterface>()
         for(top_story in latestMessage.top_stories){
+            var order = latestMessage.top_stories.indexOf(top_story)
             fragments.add(object : BackInterface {
                 override fun back(): Fragment {
-                    return BannerFragment.newInstance(top_story.id,top_story.image,top_story.title,top_story.hint)
+                    return BannerFragment.newInstance(top_story.id,top_story.image,top_story.title,top_story.hint,order)
                 }
             })
         }

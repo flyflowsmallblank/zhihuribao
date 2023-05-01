@@ -1,14 +1,15 @@
-package com.example.zhihuribao
+package com.example.zhihuribao.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.zhihuribao.data.LatestMessage
 import com.example.zhihuribao.databinding.ItemRecyclerBinding
 
 
-class RecyclerViewAdapter(val storyList: List<LatestMessage.Story> , val context: Context) : RecyclerView.Adapter<RecyclerViewAdapter.Holder>(){
+class RecyclerViewAdapter(val storyList: List<LatestMessage.Story>, val context: Context) : RecyclerView.Adapter<RecyclerViewAdapter.Holder>(){
     class Holder(val binding: ItemRecyclerBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {

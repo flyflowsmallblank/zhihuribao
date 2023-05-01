@@ -1,6 +1,6 @@
-package com.example.zhihuribao
+package com.example.zhihuribao.data
 
-data class ShortComment(
+data class LongComment(
     val comments: List<Comment>
 ) {
     data class Comment(

@@ -1,6 +1,7 @@
-package com.example.zhihuribao
+package com.example.zhihuribao.interfacee
 
 import com.example.zhihuribao.*
+import com.example.zhihuribao.data.*
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path
