@@ -39,7 +39,8 @@ class NetWork(val baseUrl: String) : ViewModel(){
     /**
      * 获得最新的消息的网络请求
      */
-    fun getLatestMessage(context: Context){
+    fun getLatestMessage(context: Context) : Boolean{
+        var isSuccess = false
         dataService.getLatestMessage()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -57,13 +58,16 @@ class NetWork(val baseUrl: String) : ViewModel(){
                 override fun onError(e: Throwable) {
                     // 在这里处理网络请求失败的情况，比如显示错误提示等
                     e.printStackTrace()
+                    isSuccess = false
                     Toast.makeText(context,"连接失败，请重试",Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onComplete() {
                     // 在这里执行请求完成后的一些操作，比如隐藏 loading 状态等
+                    isSuccess = true
                 }
             })
+        return isSuccess
     }
 
     /**

@@ -7,10 +7,12 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zhihuribao.databinding.ActivityMainBinding
@@ -28,10 +30,26 @@ class MainActivity : AppCompatActivity() {
         setContentView(mBinding.root)
         initStatusBar()
         initRvObserver()
-        startConnection()
+        getLatestMessageNet()
 //        initTabLayout()
         initTime()
     }
+
+    override fun onResume() {
+        super.onResume()
+        initRefresh()
+    }
+
+    /**
+     * 初始化刷新过程
+     */
+    private fun initRefresh() {
+        mBinding.mainRefresh.setOnRefreshListener {
+            val flag = getLatestMessageNet()
+            mBinding.mainRefresh.isRefreshing = false
+        }
+    }
+
 
     private fun initTabLayout() {
         TabLayoutMediator(mBinding.mainTab, mBinding.mainVp2Banner) { tab, position ->
@@ -47,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         mViewModel.homeLiveData.observe(this){
             val latestMessage = it as LatestMessage
             mBinding.mainRvContent.adapter = RecyclerViewAdapter(latestMessage.stories,this)
-            mBinding.mainRvContent.layoutManager = LinearLayoutManager(this)
+            mBinding.mainRvContent.layoutManager = GridLayoutManager(this,1)
             initBanner(it)
         }
     }
@@ -55,8 +73,9 @@ class MainActivity : AppCompatActivity() {
     /**
      * 从网络请求数据，然后Rv适配器填充
      */
-    private fun startConnection() {
-        mViewModel.getLatestMessage(this)
+    private fun getLatestMessageNet() : Boolean{
+        val flag = mViewModel.getLatestMessage(this)
+        return flag
     }
 
     /**

@@ -23,7 +23,6 @@ class BannerFragment : Fragment() {
                               savedInstanceState: Bundle?): View {
         val imgUrl = arguments?.getString("image_res") ?: ""
         Glide.with(this@BannerFragment).load(imgUrl).into(mBinding.imageView)
-        Log.d(TAG, "取出的图片资源是 ${arguments?.getInt("image_res") ?: 0}")
         return mBinding.root
     }
 }
