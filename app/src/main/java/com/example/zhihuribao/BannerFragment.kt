@@ -14,15 +14,26 @@ class BannerFragment : Fragment() {
     private val mBinding by lazy { FragmentBannerBinding.inflate(layoutInflater) }
 
     companion object {
-        fun newInstance(imageRes: String) = BannerFragment().apply {
-            arguments = Bundle().apply { putString("image_res", imageRes) }
+        fun newInstance(id : Int,imageRes: String,abstract : String,author : String) = BannerFragment().apply {
+            arguments = Bundle().apply {
+                putString("image_res", imageRes)
+                putString("abstract",abstract)
+                putString("author",author)
+            }
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         val imgUrl = arguments?.getString("image_res") ?: ""
+        val abstract = arguments?.getString("abstract") ?: ""
+        val author = arguments?.getString("author") ?: ""
         Glide.with(this@BannerFragment).load(imgUrl).into(mBinding.imageView)
+        mBinding.fragTvAbstract.text = abstract
+        mBinding.fragTvAuthorTime.text = author
         return mBinding.root
+    }
+
+    fun changePoint(index : Int){
     }
 }

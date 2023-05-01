@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.indices
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -31,7 +32,6 @@ class MainActivity : AppCompatActivity() {
         initStatusBar()
         initRvObserver()
         getLatestMessageNet()
-//        initTabLayout()
         initTime()
     }
 
@@ -48,14 +48,6 @@ class MainActivity : AppCompatActivity() {
             val flag = getLatestMessageNet()
             mBinding.mainRefresh.isRefreshing = false
         }
-    }
-
-
-    private fun initTabLayout() {
-        TabLayoutMediator(mBinding.mainTab, mBinding.mainVp2Banner) { tab, position ->
-
-        }.attach() //这个没有
-
     }
 
     /**
@@ -130,7 +122,7 @@ class MainActivity : AppCompatActivity() {
         for(top_story in latestMessage.top_stories){
             fragments.add(object : BackInterface {
                 override fun back(): Fragment {
-                    return BannerFragment.newInstance(top_story.image)
+                    return BannerFragment.newInstance(top_story.id,top_story.image,top_story.title,top_story.hint)
                 }
             })
         }
@@ -142,7 +134,7 @@ class MainActivity : AppCompatActivity() {
         val handler = Handler(Looper.myLooper()!!)
         handler.postDelayed(object : Runnable {
             override fun run() {
-                if(currentIndex>3){
+                if(currentIndex>latestMessage.top_stories.size){
                     currentIndex = 0
                 }
                 mBinding.mainVp2Banner.currentItem = currentIndex++
