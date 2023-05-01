@@ -9,7 +9,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.zhihuribao.*
 import com.example.zhihuribao.databinding.ActivityMainBinding
 import com.example.zhihuribao.data.LatestMessage
@@ -40,6 +41,30 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         initRefresh()
+        initScrollLast()
+    }
+
+    /**
+     * 初始化滑到底端加载更多
+     */
+    private fun initScrollLast() {
+        mBinding.mainRvContent.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+                val totalItemCount = layoutManager.itemCount
+                if (lastVisibleItemPosition == totalItemCount - 1 && dy > 30) {
+                    // 已经滑动到底部
+                    val calender = Calendar.getInstance()
+                    val year = calender.get(Calendar.YEAR)
+                    val month = calender.get(Calendar.MONTH)+1
+                    val day = calender.get(Calendar.DAY_OF_MONTH)
+                    val data = year+month+day
+                    Log.d(TAG, "获得的日期是data: $data")
+                }
+            }
+        })
     }
 
     /**
@@ -59,7 +84,8 @@ class MainActivity : AppCompatActivity() {
         mViewModel.homeLiveData.observe(this){
             val latestMessage = it as LatestMessage
             mBinding.mainRvContent.adapter = RecyclerViewAdapter(latestMessage.stories,this)
-            mBinding.mainRvContent.layoutManager = GridLayoutManager(this,1)
+            mBinding.mainRvContent.layoutManager = LinearLayoutManager(this)
+            mBinding.mainRvContent.isNestedScrollingEnabled = false
             initBanner(it)
         }
     }
@@ -132,6 +158,13 @@ class MainActivity : AppCompatActivity() {
         val adapter = ViewPagerAdapter(fragments , this)
         mBinding.mainVp2Banner.adapter = adapter
         Log.d(TAG, "适配器设置成功: ")
+        transBanner(latestMessage)
+    }
+
+    /**
+     * banner的轮播效果的实现
+     */
+    private fun transBanner(latestMessage: LatestMessage){
         //自动轮播banner
         var currentIndex = 0
         val handler = Handler(Looper.myLooper()!!)
