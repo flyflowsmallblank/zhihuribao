@@ -1,7 +1,7 @@
 package com.example.zhihuribao.data
 
 data class ShortComment(
-    val comments: List<Comment>
+    val comments: MutableList<Comment>
 ) {
     data class Comment(
         val author: String,

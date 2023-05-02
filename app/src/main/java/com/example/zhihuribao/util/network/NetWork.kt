@@ -25,6 +25,10 @@ class NetWork(val baseUrl: String) : ViewModel(){
         get() = _mutableHomeLiveData
     private val _mutableHomeLiveData = MutableLiveData<LatestMessage>()
 
+    val oldLiveData : LiveData<LatestMessage>
+        get() = _mutableOldLiveData
+    private val _mutableOldLiveData = MutableLiveData<LatestMessage>()
+
     //创建okhttp实例，用来传入retrofit的client方法
     private val okHttpClient = OkHttpClient.Builder().build()
     //创建Retrofit实例
@@ -81,14 +85,14 @@ class NetWork(val baseUrl: String) : ViewModel(){
         dataService.getOldMessage(data)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<OldMessage> {
+            .subscribe(object : Observer<LatestMessage> {
                 override fun onSubscribe(d: Disposable) {
                     // 可以在这里执行一些初始化操作，比如显示 loading 状态等
                 }
 
-                override fun onNext(response: OldMessage) {
+                override fun onNext(response: LatestMessage) {
                     // 在这里处理获取到的网络数据，比如刷新 UI 显示等
-//                    _mutableHomeLiveData.value = response
+                    _mutableOldLiveData.value = response
                 }
 
                 override fun onError(e: Throwable) {

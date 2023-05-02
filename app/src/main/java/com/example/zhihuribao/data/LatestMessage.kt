@@ -2,8 +2,8 @@ package com.example.zhihuribao.data
 
 data class LatestMessage(
     val date: String,
-    val stories: List<Story>,
-    val top_stories: List<TopStory>
+    val stories: MutableList<Story>,
+    val top_stories: MutableList<TopStory>
 ) {
     data class Story(
         val ga_prefix: String,

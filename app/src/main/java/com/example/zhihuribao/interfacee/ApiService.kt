@@ -13,7 +13,7 @@ interface ApiService {
 
     @GET("news/before/{data}")
     //别导错包，难受,返回值是observable
-    fun getOldMessage(@Path("data") data : Int) : Observable<OldMessage>
+    fun getOldMessage(@Path("data") data : Int) : Observable<LatestMessage>
 
     @GET("story-extra/{id}}")
     //别导错包，难受,返回值是observable
