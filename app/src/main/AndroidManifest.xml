@@ -16,8 +16,15 @@
         android:theme="@style/Theme.Zhihuribao"
         tools:targetApi="31">
         <activity
-            android:name=".view.ContentActivity"
+            android:name=".CommentActivity"
             android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".view.ContentActivity"
+            android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

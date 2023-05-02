@@ -1,6 +1,6 @@
 package com.example.zhihuribao.data
 
-data class LongComment(
+data class Comment(
     val comments: MutableList<Comment>
 ) {
     data class Comment(

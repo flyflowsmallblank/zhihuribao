@@ -15,15 +15,15 @@ interface ApiService {
     //别导错包，难受,返回值是observable
     fun getOldMessage(@Path("data") data : Int) : Observable<LatestMessage>
 
-    @GET("story-extra/{id}}")
+    @GET("story-extra/{id}")
     //别导错包，难受,返回值是observable
     fun getExtraMessage(@Path("id") id : Int) : Observable<ExtraMessage>
 
     @GET("story/{id}/long-comments")
     //别导错包，难受,返回值是observable
-    fun getLongComment(@Path("id") id : Int) : Observable<LongComment>
+    fun getLongComment(@Path("id") id : Int) : Observable<Comment>
 
     @GET("story/{id}/short-comments")
     //别导错包，难受,返回值是observable
-    fun getShortComment(@Path("id") id : Int) : Observable<ShortComment>
+    fun getShortComment(@Path("id") id : Int) : Observable<Comment>
 }

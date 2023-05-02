@@ -29,6 +29,14 @@ class NetWork(val baseUrl: String) : ViewModel(){
         get() = _mutableOldLiveData
     private val _mutableOldLiveData = MutableLiveData<LatestMessage>()
 
+    val commentLiveData : LiveData<Comment>
+        get() = _mutableCommentLiveData
+    private val _mutableCommentLiveData = MutableLiveData<Comment>()
+
+    val extraLiveData : LiveData<ExtraMessage>
+        get() = _mutableExtraLiveData
+    private val _mutableExtraLiveData = MutableLiveData<ExtraMessage>()
+
     //创建okhttp实例，用来传入retrofit的client方法
     private val okHttpClient = OkHttpClient.Builder().build()
     //创建Retrofit实例
@@ -117,12 +125,13 @@ class NetWork(val baseUrl: String) : ViewModel(){
 
                 override fun onNext(response: ExtraMessage) {
                     // 在这里处理获取到的网络数据，比如刷新 UI 显示等
-//                    _mutableHomeLiveData.value = response
+                    _mutableExtraLiveData.value = response
                 }
 
                 override fun onError(e: Throwable) {
                     // 在这里处理网络请求失败的情况，比如显示错误提示等
                     Toast.makeText(context,"连接失败，请重试",Toast.LENGTH_SHORT).show()
+                    e.printStackTrace()
                 }
 
                 override fun onComplete() {
@@ -135,19 +144,20 @@ class NetWork(val baseUrl: String) : ViewModel(){
         dataService.getLongComment(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<LongComment> {
+            .subscribe(object : Observer<Comment> {
                 override fun onSubscribe(d: Disposable) {
                     // 可以在这里执行一些初始化操作，比如显示 loading 状态等
                 }
 
-                override fun onNext(response: LongComment) {
+                override fun onNext(response: Comment) {
                     // 在这里处理获取到的网络数据，比如刷新 UI 显示等
-//                    _mutableHomeLiveData.value = response
+                    _mutableCommentLiveData.value = response
                 }
 
                 override fun onError(e: Throwable) {
                     // 在这里处理网络请求失败的情况，比如显示错误提示等
                     Toast.makeText(context,"连接失败，请重试",Toast.LENGTH_SHORT).show()
+                    e.printStackTrace()
                 }
 
                 override fun onComplete() {
@@ -160,19 +170,20 @@ class NetWork(val baseUrl: String) : ViewModel(){
         dataService.getShortComment(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<ShortComment> {
+            .subscribe(object : Observer<Comment> {
                 override fun onSubscribe(d: Disposable) {
                     // 可以在这里执行一些初始化操作，比如显示 loading 状态等
                 }
 
-                override fun onNext(response: ShortComment) {
+                override fun onNext(response: Comment) {
                     // 在这里处理获取到的网络数据，比如刷新 UI 显示等
-//                    _mutableHomeLiveData.value = response
+                    _mutableCommentLiveData.value = response
                 }
 
                 override fun onError(e: Throwable) {
                     // 在这里处理网络请求失败的情况，比如显示错误提示等
                     Toast.makeText(context,"连接失败，请重试",Toast.LENGTH_SHORT).show()
+                    e.printStackTrace()
                 }
 
                 override fun onComplete() {
