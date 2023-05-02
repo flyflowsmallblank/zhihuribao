@@ -1,13 +1,14 @@
 package com.example.zhihuribao.view
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
-import android.webkit.WebViewClient
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -21,7 +22,9 @@ import com.example.zhihuribao.util.network.NetWork
 import com.example.zhihuribao.util.network.NetWorkFactory
 import com.example.zhihuribao.adapter.RvContentAdapter
 import com.example.zhihuribao.adapter.ViewPagerAdapter
+import com.example.zhihuribao.data.AllData
 import com.example.zhihuribao.databinding.ActivityMainBinding
+import com.example.zhihuribao.interfacee.OnItemClickListener
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -141,6 +144,7 @@ class MainActivity : AppCompatActivity() {
             mBinding.mainRvContent.layoutManager = LinearLayoutManager(this)
             mBinding.mainRvContent.isNestedScrollingEnabled = false
             initBanner(it)
+            initOnItemClickListener(adapter)
         }
     }
 
@@ -238,5 +242,18 @@ class MainActivity : AppCompatActivity() {
                 handler.postDelayed(this, 3000)
             }
         }, 5000)
+    }
+
+    /**
+     *回调设置器，每个item的点击事件,跳转到下一个activity
+     */
+    private fun initOnItemClickListener(recycleViewAdapter: RvContentAdapter) {
+        recycleViewAdapter.mOnItemClickListener = object : OnItemClickListener {
+            override fun onItemClick(view: View, position: Int,storyList: MutableList<LatestMessage.Story>) {
+                AllData.position = position
+                AllData.latestMessage = storyList
+                ContentActivity.startAction(this@MainActivity)
+            }
+        }
     }
 }

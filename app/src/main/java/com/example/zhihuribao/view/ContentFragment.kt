@@ -1,42 +1,48 @@
 package com.example.zhihuribao.view
 
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.zhihuribao.R
+import android.webkit.WebViewClient
+import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
+import com.example.zhihuribao.data.AllData
+import com.example.zhihuribao.data.LatestMessage
+import com.example.zhihuribao.databinding.FragmentContentBinding
 
 
 class ContentFragment : Fragment() {
+    private val mBinding by lazy { FragmentContentBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_content, container, false)
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val latestMessageStory = AllData.latestMessageStory
+        val contentUrl = latestMessageStory?.url
+        Log.d(TAG, "imgUrl = $contentUrl")
+        mBinding.fragWebView.settings.javaScriptEnabled = true
+        mBinding.fragWebView.webViewClient = WebViewClient()
+        if (contentUrl != null) {
+            mBinding.fragWebView.loadUrl(contentUrl)
+            mBinding.fragWebView.isVisible = true
+            Log.d(TAG, "加载webview成功了: ")
+        }
+        return mBinding.root
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ContentFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(message : LatestMessage.Story) =
             ContentFragment().apply {
                 arguments = Bundle().apply {
-
+                    AllData.latestMessageStory = message
                 }
             }
     }
