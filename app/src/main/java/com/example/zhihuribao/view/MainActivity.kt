@@ -32,7 +32,7 @@ import java.util.*
 
 const val TAG = "lx"
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCatchException() {
     private val mBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val mViewModel by lazy {
         ViewModelProvider(
@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
         mViewModel.homeLiveData.observe(this) {
             val latestMessage = it as LatestMessage
             adapter = RvContentAdapter(latestMessage.stories, this)
-            mBinding.mainRvContent.adapter = adapter
+            mBinding.mainRvContent.adapter = adapter //adapter
             mBinding.mainRvContent.layoutManager = LinearLayoutManager(this)
             mBinding.mainRvContent.isNestedScrollingEnabled = false
             initBanner(it)
