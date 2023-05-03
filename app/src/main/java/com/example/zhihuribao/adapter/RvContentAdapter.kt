@@ -5,8 +5,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebViewClient
-import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -15,8 +13,6 @@ import com.bumptech.glide.Glide
 import com.example.zhihuribao.data.LatestMessage
 import com.example.zhihuribao.databinding.ItemRecyclerBinding
 import com.example.zhihuribao.interfacee.OnItemClickListener
-import com.example.zhihuribao.view.MainActivity
-
 
 class RvContentAdapter(var storyList: MutableList<LatestMessage.Story>, val context: Context) : ListAdapter<String, RvContentAdapter.Holder>(
     object : DiffUtil.ItemCallback<String>() {

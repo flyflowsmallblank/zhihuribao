@@ -32,7 +32,6 @@ class ContentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(mBinding.root)
         initAdapter()
-
     }
 
 

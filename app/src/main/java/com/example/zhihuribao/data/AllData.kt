@@ -4,4 +4,5 @@ object AllData {
     var position : Int = 0
     var latestMessage : MutableList<LatestMessage.Story>? = null
     var latestMessageStory : LatestMessage.Story? = null
+    var commentId : Int? = null
 }

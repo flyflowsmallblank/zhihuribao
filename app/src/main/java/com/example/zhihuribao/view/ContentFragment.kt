@@ -51,6 +51,7 @@ class ContentFragment : Fragment() {
         if(id != null){
            getExtra(id)
         }
+        AllData.commentId = id
         Log.d(TAG, "id: $id")
         return mBinding.root
     }
@@ -63,6 +64,10 @@ class ContentFragment : Fragment() {
     private fun initClick() {
         mBinding.fragContentBack.setOnClickListener {
             requireActivity().finish()
+        }
+
+        mBinding.fragContentComment.setOnClickListener {
+            CommentActivity.startAction(requireActivity())
         }
     }
 
